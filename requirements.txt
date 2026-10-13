@@ -1,0 +1,8 @@
+# Install CUDA torch first:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu128
+torch
+transformers>=4.45,<5
+accelerate
+sounddevice
+soundfile
+numpy
