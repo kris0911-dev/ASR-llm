@@ -1,0 +1,1 @@
+whisper.cpp commit 0c7be696371069e0baa2515ed7aa08d5a5473aa6 (subset: whisper + ggml CPU backend only)
