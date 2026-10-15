@@ -1,2 +1,9 @@
 /.venv
 /__pycache__
+
+# large files: kept locally, not pushed
+*.bin
+*.apk
+*.gguf
+*.onnx
+*.safetensors

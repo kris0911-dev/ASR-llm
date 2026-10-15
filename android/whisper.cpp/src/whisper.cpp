@@ -9365,3 +9365,17 @@ static void whisper_log_callback_default(ggml_log_level level, const char * text
     fputs(text, stderr);
     fflush(stderr);
 }
+
+// ---- ASR-llm addition: totals (not per-run averages) for the app's timing display ----
+// out[0..5] = total ms: mel, sample, encode, decode, batchd, prompt
+// out[6..10] = counts:  n_sample, n_encode, n_decode, n_batchd, n_prompt
+extern "C" WHISPER_API void asrllm_get_timing_totals(struct whisper_context * ctx, double * out) {
+    for (int i = 0; i < 11; i++) out[i] = 0;
+    if (ctx == nullptr || ctx->state == nullptr) return;
+    const whisper_state * s = ctx->state;
+    out[0] = s->t_mel_us / 1000.0;   out[1] = s->t_sample_us / 1000.0;
+    out[2] = s->t_encode_us / 1000.0; out[3] = s->t_decode_us / 1000.0;
+    out[4] = s->t_batchd_us / 1000.0; out[5] = s->t_prompt_us / 1000.0;
+    out[6] = s->n_sample; out[7] = s->n_encode; out[8] = s->n_decode;
+    out[9] = s->n_batchd; out[10] = s->n_prompt;
+}

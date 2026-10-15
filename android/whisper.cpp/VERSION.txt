@@ -1,1 +1,2 @@
 whisper.cpp commit 0c7be696371069e0baa2515ed7aa08d5a5473aa6 (subset: whisper + ggml CPU backend only)
+Local change: asrllm_get_timing_totals() appended to src/whisper.cpp (timing totals for the app).

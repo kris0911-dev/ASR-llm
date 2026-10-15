@@ -49,11 +49,24 @@ Only keep **one** `.bin` in the app folder (the app uses the first one, in name 
 - **Transcribe WAV file...** works on `.wav` files (any sample rate, mono or stereo).
 - Recording stops by itself after 120 s.
 
+## Benchmark (how fast is it on my phone?)
+1. First record something or transcribe a WAV (the benchmark re-uses that last audio).
+2. Tap **Benchmark (last audio, 2/4/6/8 threads)**. It transcribes the same audio once per thread count
+   (so it takes 3-4x as long as one transcription).
+3. The table shows, per thread count: total seconds, **RTF** (real-time factor = processing time / audio length;
+   below 1.0 means faster than real time), and the stages: encode, decode, batch-decode, sampling, prompt.
+4. The top lines show phone model, cores, CPU flags (asimddp = dotprod, fphp = fp16, i8mm),
+   and which ggml CPU build was picked.
+5. **Copy benchmark report** copies it; it is also saved as `benchmark-<time>.txt` next to the model
+   (`/sdcard/Android/data/com.asrllm/files/`, `adb pull` it).
+
+Normal transcriptions use the "default threads" shown there (the phone's fast cores).
+
 ## Good to know
 - Speed depends on the phone. Whisper large-v3 is a big model: expect several seconds to tens of seconds
   for a short sentence on mid-range phones. It uses up to 4 CPU cores, no GPU.
 - The app is built for 64-bit phones only (arm64-v8a, plus x86_64 for the emulator). 32-bit phones cannot load a 1 GB+ model.
-- The native code uses only basic ARMv8 instructions, so it runs on every 64-bit phone (newer phones could be faster with special builds).
+- The app contains several builds of the math library (ARMv8.0 baseline, ARMv8.2 dotprod/fp16, ARMv8.6 i8mm, ARMv9 SVE/SME). At start it picks the fastest one your CPU supports, so old phones still work.
 - `whisper.cpp\` contains the needed part of whisper.cpp (MIT licence), see `whisper.cpp\VERSION.txt`.
 
 ## How the model files were made (for reference)
